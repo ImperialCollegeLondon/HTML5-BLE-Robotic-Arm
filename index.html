@@ -16,7 +16,6 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 
-<!--<script src="http://www.java.com/js/deployJava.js"></script>-->
 <noscript> 
 Please enable Java script on your browser. </br>
 <a href="http://www.google.com/support/bin/answer.py?answer=23852">Click here for details on how to enable Java script on your browser</a>
@@ -58,16 +57,10 @@ function getUsbVendorName(value) {
 }
 
 function onDiscoverService() {//start searching for BLE devices
-  //var getdeviceinfo=document.getElementById("deviceinfo");
-  //getdeviceinfo.hidden=true;
   var discoverservice=document.getElementById("discover");//hide the button
   discoverservice.hidden=true;
 
   // Validate services UUID entered by user first.
-  /*let optionalServices = document.querySelector('#optionalServices').value
-    .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
-    .filter(s => s && BluetoothUUID.getService);*/
-//let optionalServices=['47442014-0f63-5b27-9122-728099603712'];//BSN IoT (note UUID lower case)
 let optionalServices=['47452000-0f63-5b27-9122-728099603712'];//Robotic Arm (note UUID lower case)
   console.log('Requesting any Bluetooth Device...');
   navigator.bluetooth.requestDevice({
@@ -240,9 +233,13 @@ function getSupportedProperties(characteristic) {//find the details of a charact
 </head>
 <body onload="init();" style="font-family: Arial">
  <h1>BLE - Robotic Arm Control</h1>  
- <p>This is a simple demo program of using BLE to control a robotic arm (Note: the SainSmart DIY 6-Axis Arm is integrated with an Intel Curie)</p> 
+ <p>This is a simple demo program of using BLE to control a robotic arm (Note: the SainSmart DIY 6-Axis Arm is integrated with an Intel Curie)<br/>Note: It only works with Google Chrome browsers and the experimental-web-platform-features enabled (<a href="chrome://flags/#enable-experimental-web-platform-features">chrome://flags/#enable-experimental-web-platform-features</a>, enable the highlighted flag, then restart Chrome)</p> 
+ <img src="robotic_arm.jpg" height=350px/> 
+ <img src="IMG_7868.jpg" height=350px/>
+ <img src="IMG_7869.jpg" height=350px/>
+ <img src="robotic_arm1.jpg" height=350px/><br/>
 <!--<input type="button" id="deviceinfo" value="Get Device Information" onclick="onButtonClick();"/>-->
-<input type="button" id="discover" value="Discover BLE devices" onclick="onDiscoverService();"/><br/>
+<input type="button" id="discover" value="Discover BLE devices" onclick="onDiscoverService();" style="height:50px;font-size:14px"/><br/>
 <table>
 <tr id="servoA" hidden><td>Servo A (elbow):</td><td><input type="range" id="servoAslider" value="Servo A" min="0" value="50" max="140" step="1" onchange="onSliderA(this.value)"/></td><br/></tr>
 <tr id="servoB" hidden><td>Servo B (shoulder):</td><td><input type="range" id="servoBslider" value="Servo B" min="0" value="10" max="165" step="1" onchange="onSliderB(this.value)"/></td></tr>
@@ -253,6 +250,6 @@ function getSupportedProperties(characteristic) {//find the details of a charact
 <tr id="reset" hidden><td>Reset:</td><td><input type="button" id="resetbutton" value="Reset" min="0" onclick="onReset()"/></td></tr>
 </table>
 <hr/>
-<p>The source code for hte Arduino program for the robot control can be found <a href="Robot_BLE.ino">here</a></p>
+<p>The source code for the Arduino program for the robotoc arm control can be found <a href="Robot_BLE.ino">here</a></p>
 <p>by Benny Lo</p>
 </body></html>
