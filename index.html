@@ -27,6 +27,7 @@ Please enable Java script on your browser. </br>
   var servoD_characteristic=null;
   var servoE_characteristic=null;
   var servoF_characteristic=null;
+  var servoG_characteristic=null;
   var reset_characteristic=null;
 
   function init()
@@ -139,6 +140,13 @@ let optionalServices=['47452000-0f63-5b27-9122-728099603712'];//Robotic Arm (not
                 var servoF_control=document.getElementById("servoF");
                 servoF_control.hidden=false;
             }
+            else if (characteristic.uuid==['47452008-0f63-5b27-9122-728099603712'])
+            {
+                //console.log("servo G");
+                servoG_characteristic=characteristic;
+                var servoG_control=document.getElementById("servoG");
+                servoG_control.hidden=false;
+            }
             else if (characteristic.uuid==['47452007-0f63-5b27-9122-728099603712'])
             {
                 //console.log("Reset");
@@ -211,6 +219,13 @@ function onSliderF(value)
   newvalue = Uint8Array.of(value); 
   servoF_characteristic.writeValue(newvalue); 
 }
+function onSliderG(value)
+{
+  if (servoG_characteristic ==null) return;
+  console.log("servoG:"+value);
+  newvalue = Uint8Array.of(value); 
+  servoG_characteristic.writeValue(newvalue); 
+}
 function onReset()
 {
   if (reset_characteristic ==null) return;
@@ -247,9 +262,10 @@ function getSupportedProperties(characteristic) {//find the details of a charact
 <tr id="servoD" hidden><td>Servo D (wrist Y):</td><td><input type="range" id="servoDslider" value="Servo D" min="0" value="30" max="90" step="1" onchange="onSliderD(this.value)"/></td></tr>
 <tr id="servoE" hidden><td>Servo E (wrist Z):</td><td><input type="range" id="servoEslider" value="Servo E" min="0" value="66" max="180" step="1" onchange="onSliderE(this.value)"/></td></tr>
 <tr id="servoF" hidden><td>Servo F (Base):</td><td><input type="range" id="servoFslider" value="Servo F" min="0" value="90" max="180" step="1" onchange="onSliderF(this.value)"/></td></tr>
+<tr id="servoG" hidden><td>Servo G (Craw):</td><td><input type="range" id="servoGslider" value="Servo G" min="0" value="90" max="180" step="1" onchange="onSliderG(this.value)"/></td></tr>
 <tr id="reset" hidden><td>Reset:</td><td><input type="button" id="resetbutton" value="Reset" min="0" onclick="onReset()"/></td></tr>
 </table>
 <hr/>
-<p>The source code for the Arduino program for the robotoc arm control can be found <a href="Robot_BLE.ino">here</a></p>
+<p>The source code for the Arduino program for the robotoc arm control can be found <a href="Robot_BLEv1.ino">here</a></p>
 <p>by Benny Lo</p>
 </body></html>

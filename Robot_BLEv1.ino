@@ -1,8 +1,8 @@
 //********************************************
-//* Robotic Arm with BLE control
+//* Robotic Arm with BLE control v1
 //*
 //* By Benny Lo
-//* Dec 5 2017
+//* Jan 14 2018
 //********************************************
 #include <CurieBLE.h>
 #include <Servo.h>  
@@ -12,8 +12,9 @@ Servo myservoC;
 Servo myservoD;
 Servo myservoE;
 Servo myservoF;
+Servo myservoG;//the craw
 int i,pos,myspeed;
-int sea,seb,sec,sed,see,sef;
+int sea,seb,sec,sed,see,sef,seg;
 
 BLEPeripheral blePeripheral;//create peripheral instance
 BLEService BrobotService("47452000-0f63-5b27-9122-728099603712");//BLE service
@@ -24,6 +25,7 @@ BLECharCharacteristic BLE_ServoC("47452003-0f63-5b27-9122-728099603712", BLERead
 BLECharCharacteristic BLE_ServoD("47452004-0f63-5b27-9122-728099603712", BLERead | BLEWrite);
 BLECharCharacteristic BLE_ServoE("47452005-0f63-5b27-9122-728099603712", BLERead | BLEWrite);
 BLECharCharacteristic BLE_ServoF("47452006-0f63-5b27-9122-728099603712", BLERead | BLEWrite);
+BLECharCharacteristic BLE_ServoG("47452008-0f63-5b27-9122-728099603712", BLERead | BLEWrite);
 BLECharCharacteristic BLE_Reset("47452007-0f63-5b27-9122-728099603712",  BLEWrite);
 
 void myservosetup()  //set up the servo motors
@@ -34,6 +36,7 @@ void myservosetup()  //set up the servo motors
    sed=myservoD.read();
    see=myservoE.read();
    sef=myservoF.read();
+   seg=myservoG.read();
    
    myspeed=500;
    for(pos=0;pos<=myspeed;pos+=1)
@@ -43,7 +46,8 @@ void myservosetup()  //set up the servo motors
     myservoC.write(int(map(pos,1,myspeed,sec,80)));
     myservoD.write(int(map(pos,1,myspeed,sed,90)));
     myservoE.write(int(map(pos,1,myspeed,see,66)));
-    myservoF.write(int(map(pos,1,myspeed,sef,90)));    
+    myservoF.write(int(map(pos,1,myspeed,sef,90)));
+    myservoG.write(int(map(pos,1,myspeed,sef,90)));    
     delay(1);
    }
 }
@@ -58,14 +62,16 @@ void setup()
   myservoC.attach(4); 
   myservoD.attach(5); 
   myservoE.attach(6); 
-  myservoF.attach(7); 
+  myservoF.attach(7);
+  myservoG.attach(8); 
   
   myservoA.write(66);
   myservoB.write(10);
   myservoC.write(50);
   myservoD.write(30);
   myservoE.write(120);
-  myservoF.write(90);    
+  myservoF.write(90); 
+  myservoG.write(90);    
   // set the local name peripheral advertises
   blePeripheral.setLocalName("BRobot");
   // set the UUID for the service this peripheral advertises
@@ -79,6 +85,7 @@ void setup()
   blePeripheral.addAttribute(BLE_ServoD);
   blePeripheral.addAttribute(BLE_ServoE);
   blePeripheral.addAttribute(BLE_ServoF);
+  blePeripheral.addAttribute(BLE_ServoG);
   blePeripheral.addAttribute(BLE_Reset);
 
   // assign event handlers for connected, disconnected to peripheral
@@ -92,6 +99,7 @@ void setup()
   BLE_ServoD.setEventHandler(BLEWritten, ServoDCharacteristicWritten);
   BLE_ServoE.setEventHandler(BLEWritten, ServoECharacteristicWritten);
   BLE_ServoF.setEventHandler(BLEWritten, ServoFCharacteristicWritten);
+  BLE_ServoG.setEventHandler(BLEWritten, ServoFCharacteristicWritten);
   BLE_Reset.setEventHandler(BLEWritten, ResetCharacteristicWritten);
   
 // set an initial value for the characteristic
@@ -101,6 +109,7 @@ void setup()
   BLE_ServoD.setValue(30);
   BLE_ServoE.setValue(66);
   BLE_ServoF.setValue(90);
+  BLE_ServoG.setValue(90);
 
   // advertise the service
   blePeripheral.begin();
@@ -203,6 +212,13 @@ void ServoFCharacteristicWritten(BLECentral& central, BLECharacteristic& charact
   Serial.print("ServoF Control: ");
   myservoF.write((byte)BLE_ServoF.value());
   Serial.println((byte)BLE_ServoF.value(),DEC);
+}
+
+void ServoGCharacteristicWritten(BLECentral& central, BLECharacteristic& characteristic) {
+  // central wrote new value to characteristic, update LED
+  Serial.print("ServoG Control: ");
+  myservoG.write((byte)BLE_ServoG.value());
+  Serial.println((byte)BLE_ServoG.value(),DEC);
 }
 
 void ResetCharacteristicWritten(BLECentral& central, BLECharacteristic& characteristic) {
