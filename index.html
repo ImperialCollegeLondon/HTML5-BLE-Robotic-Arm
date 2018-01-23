@@ -29,12 +29,33 @@ Please enable Java script on your browser. </br>
   var servoF_characteristic=null;
   var servoG_characteristic=null;
   var reset_characteristic=null;
+  var servoA_default=60;
+  var servoB_default=100;
+  var servoC_default=100;
+  var servoD_default=100;
+  var servoE_default=100;
+  var servoF_default=100;
+  var servoG_default=0;
 
   function init()
   {
     if (isWebBluetoothEnabled())
     {
-        console.log("BLE is enabled!");        
+        console.log("BLE is enabled!");   
+        var pAsliderelement=document.getElementById('servoAslider');
+        pAsliderelement.value=servoA_default;
+        var pBsliderelement=document.getElementById('servoBslider');
+        pBsliderelement.value=servoB_default;
+        var pCsliderelement=document.getElementById('servoCslider');
+        pCsliderelement.value=servoC_default;
+        var pDsliderelement=document.getElementById('servoDslider');
+        pDsliderelement.value=servoD_default;
+        var pEsliderelement=document.getElementById('servoEslider');
+        pEsliderelement.value=servoE_default;
+        var pFsliderelement=document.getElementById('servoFslider');
+        pFsliderelement.value=servoF_default;
+        var pGsliderelement=document.getElementById('servoGslider');
+        pGsliderelement.value=servoG_default;
     }
     else {
         console.log("BLE is not enabled in this web browser!")
