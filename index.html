@@ -31,11 +31,15 @@ Please enable Java script on your browser. </br>
   var reset_characteristic=null;
   var servoA_default=60;
   var servoB_default=100;
-  var servoC_default=100;
-  var servoD_default=100;
-  var servoE_default=100;
-  var servoF_default=100;
+  var servoC_default=80;
+  var servoD_default=90;
+  var servoE_default=66;
+  var servoF_default=90;
   var servoG_default=0;
+  var servoA_min=10;
+  var servoA_max=140;
+  var servoF_min=0;
+  var servoF_max=180;
 
   function init()
   {
@@ -199,6 +203,8 @@ function onButtonClick() {
 function onSliderA(value)
 {
   if (servoA_characteristic ==null) return;
+  //if (value<servoA_min) value=servoA_min;
+  //if (value>=servoA_max) value=servoA_max;
   console.log("servoA:"+value);
   newvalue = Uint8Array.of(value); 
   servoA_characteristic.writeValue(newvalue); 
@@ -277,8 +283,8 @@ function getSupportedProperties(characteristic) {//find the details of a charact
 <!--<input type="button" id="deviceinfo" value="Get Device Information" onclick="onButtonClick();"/>-->
 <input type="button" id="discover" value="Discover BLE devices" onclick="onDiscoverService();" style="height:50px;font-size:14px"/><br/>
 <table>
-<tr id="servoA" hidden><td>Servo A (elbow):</td><td><input type="range" id="servoAslider" value="Servo A" min="0" value="50" max="140" step="1" onchange="onSliderA(this.value)"/></td><br/></tr>
-<tr id="servoB" hidden><td>Servo B (shoulder):</td><td><input type="range" id="servoBslider" value="Servo B" min="0" value="10" max="165" step="1" onchange="onSliderB(this.value)"/></td></tr>
+<tr id="servoA" hidden><td>Servo A (elbow):</td><td><input type="range" id="servoAslider" value="Servo A" min="10" value="50" max="140" step="1" onchange="onSliderA(this.value)"/></td><br/></tr>
+<tr id="servoB" hidden><td>Servo B (shoulder):</td><td><input type="range" id="servoBslider" value="Servo B" min="25" value="10" max="150" step="1" onchange="onSliderB(this.value)"/></td></tr>
 <tr id="servoC" hidden><td>Servo C (wrist X):</td><td><input type="range" id="servoCslider" value="Servo C" min="0" value="80" max="180" step="1" onchange="onSliderC(this.value)"/></td></tr>
 <tr id="servoD" hidden><td>Servo D (wrist Y):</td><td><input type="range" id="servoDslider" value="Servo D" min="0" value="30" max="90" step="1" onchange="onSliderD(this.value)"/></td></tr>
 <tr id="servoE" hidden><td>Servo E (wrist Z):</td><td><input type="range" id="servoEslider" value="Servo E" min="0" value="66" max="180" step="1" onchange="onSliderE(this.value)"/></td></tr>
